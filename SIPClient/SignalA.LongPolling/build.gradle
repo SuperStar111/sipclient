@@ -1,0 +1,32 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.3'
+    }
+}
+apply plugin: 'com.android.library'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 16
+        versionCode 7
+        versionName "0.20"
+    }
+}
+
+dependencies {
+    compile project(':parallel-basic-http-client')
+    compile project(':SignalA')
+}
+
+apply from: '../maven_push.gradle'

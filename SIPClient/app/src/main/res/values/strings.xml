@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">SIPClient</string>
+
+    <string name="title_contact">All Contacts</string>
+    <string name="title_history">Call History</string>
+
+    <string name="action_login_failed">Login Fail</string>
+    <string name="action_network_error">Network Error!</string>
+    <string name="action_confirm">OK</string>
+    <string name="action_cancel">Cancel</string>
+
+    <string name="dialog_contact_title">Contact</string>
+
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <string name="logging_in">Sign in&#8230;</string>
+    <string name="registering">Registering&#8230;</string>
+
+    <string name="calling">Calling&#8230;</string>
+
+    //Add Contacts
+    <string name="title_add_contact">Add Contact</string>
+    <string name="title_edit_contact">Edit Contact</string>
+</resources>
