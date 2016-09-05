@@ -62,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.link_login:
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                finish();
                 break;
         }
     }

@@ -21,8 +21,8 @@ namespace WebApplication4.hub
         public void Call(string from, string to)
         {
             // Call the addNewMessageToPage method to update clients.
-            Clients.Caller.sendRoom("1001", from, to);
-            Clients.Others.sendRoom("1002", from, to);
+            //Clients.Caller.sendRoom("1001", from, to);
+            Clients.All.sendRoom("1001:1002:192.168.1.122", from, to);
         }
 
         public void Call_End(string from, string to)

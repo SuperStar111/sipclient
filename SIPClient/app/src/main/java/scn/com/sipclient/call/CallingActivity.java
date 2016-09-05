@@ -104,18 +104,7 @@ public class CallingActivity extends AppCompatActivity {
             }
         });
 
-        mTask = new TimerTask() {
-            @Override
-            public void run() {
-                mCount ++;
-                tvCount.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvCount.setText(getPassedTimeAsString());
-                    }
-                });
-            }
-        };
+       setTImerTask();
 
         mTimer = new Timer();
 
@@ -157,6 +146,8 @@ public class CallingActivity extends AppCompatActivity {
             mSipCallRecv = null;
         }
 
+        mSipService.unRegister();
+
         mTimer.cancel();
         super.onDestroy();
     }
@@ -185,7 +176,7 @@ public class CallingActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        String serverUrl = "http://192.168.1.113:81";
+        String serverUrl = Constants.SERVER_URL;
         String hubName = "CallHub";
 
         Platform.loadPlatformComponent(new AndroidPlatformComponent());
@@ -242,6 +233,7 @@ public class CallingActivity extends AppCompatActivity {
             Log.e("SignalR","failed to normalize sip uri '" + sip_username + "'");
             return false;
         }
+        Log.e(TAG,"Make Voice Call to  :)" + sip_username);
         mSession = NgnAVSession.createOutgoingSession(mSipService.getSipStack(), NgnMediaType.Audio);
         return mSession.makeCall(validUri);
     }
@@ -334,6 +326,8 @@ public class CallingActivity extends AppCompatActivity {
                     Log.i("DEBUG", "Call connected");
                     mEngine.getSoundService().stopRingBackTone();
                     call_connected = true;
+                    mTask.cancel();
+                    setTImerTask();
                     mTimer.schedule(mTask, 1000, 1000);
                     break;
                 case TERMINATED:
@@ -346,6 +340,20 @@ public class CallingActivity extends AppCompatActivity {
 
     }
 
+    private void setTImerTask(){
+        mTask = new TimerTask() {
+            @Override
+            public void run() {
+                mCount ++;
+                tvCount.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvCount.setText(getPassedTimeAsString());
+                    }
+                });
+            }
+        };
+    }
 
     private void startEngine(){
         if (!mEngine.isStarted()) {

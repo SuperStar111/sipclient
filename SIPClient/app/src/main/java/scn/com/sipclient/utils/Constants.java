@@ -11,4 +11,6 @@ public class Constants {
 
     public final static int CALL_RECEIVED = 1;
     public final static int CALL_MADE = 2;
+
+    public final static String SERVER_URL = "http://192.168.1.113:81";
 }

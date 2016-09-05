@@ -141,6 +141,8 @@ public class ReceiveCallActivity extends AppCompatActivity {
             public void onClick(View v) {
                 acceptCall(email_from, email_to);
                 findViewById(R.id.btn_accept_call).setEnabled(false);
+                mEngine.getSoundService().stopRingTone();
+                tvCount.setText(getPassedTimeAsString());
             }
         });
 
@@ -210,6 +212,9 @@ public class ReceiveCallActivity extends AppCompatActivity {
             unregisterReceiver(mSipCallRecv);
             mSipCallRecv = null;
         }
+
+        mSipService.unRegister();
+
         super.onDestroy();
     }
 
@@ -237,7 +242,7 @@ public class ReceiveCallActivity extends AppCompatActivity {
 
 
     private void initialize() {
-        String serverUrl = "http://192.168.1.113:81";
+        String serverUrl = Constants.SERVER_URL;
         String hubName = "CallHub";
 
         Platform.loadPlatformComponent(new AndroidPlatformComponent());
@@ -267,6 +272,7 @@ public class ReceiveCallActivity extends AppCompatActivity {
     private void acceptCall(String email_from, String email_to) {
         try {
             mHub.invoke("Call_Start",email_from, email_to).get();
+
             Log.e(TAG, "Accept Call");
             Log.e(TAG, "From:" + email_from + ", To:" + email_to);
         } catch( Exception e ){
@@ -298,7 +304,7 @@ public class ReceiveCallActivity extends AppCompatActivity {
                             Log.e(TAG,"UNREGISTRATION_OK");
                             break;
                         case REGISTRATION_OK:
-                            Log.e(TAG,"REGISTRATION_OK");
+                            Log.e(TAG,"REGISTRATION_OK" + SIP_USERNAME);
                             mEngine.getSoundService().startRingTone();
                             break;
                         case REGISTRATION_INPROGRESS:

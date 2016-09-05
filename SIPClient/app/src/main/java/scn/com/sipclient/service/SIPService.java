@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import microsoft.aspnet.signalr.client.Constants;
 import microsoft.aspnet.signalr.client.Platform;
 import microsoft.aspnet.signalr.client.SignalRFuture;
 import microsoft.aspnet.signalr.client.http.android.AndroidPlatformComponent;
@@ -14,6 +15,7 @@ import microsoft.aspnet.signalr.client.hubs.HubConnection;
 import microsoft.aspnet.signalr.client.hubs.HubProxy;
 import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler2;
 import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler3;
+import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler5;
 
 public class SIPService extends Service {
 
@@ -39,7 +41,7 @@ public class SIPService extends Service {
 
 
     private void initialize() {
-        String serverUrl = "http://192.168.1.113:81";
+        String serverUrl = scn.com.sipclient.utils.Constants.SERVER_URL;
         String hubName = "CallHub";
 
         Platform.loadPlatformComponent(new AndroidPlatformComponent());
@@ -48,20 +50,21 @@ public class SIPService extends Service {
     }
 
     private void prepareGetMessage() {
-        mHub.on("sendRoom", new SubscriptionHandler3<String, String, String>() {
+        mHub.on("sendRoom", new SubscriptionHandler3<String, String, String>(){
 
             @Override
-            public void run(final String sipaddress, final String call_from,final String call_to) {
+            public void run(final String sipAddress, final String call_from,final String call_to) {
 
                 broadcastIntent = new Intent("INIT_CALL");
-                broadcastIntent.putExtra("SIP_ADDRESS", sipaddress);
+                String [] sipAddr = sipAddress.split(":");
+                broadcastIntent.putExtra("SIPNAME_FROM", sipAddr[0]);
+                broadcastIntent.putExtra("SIPNAME_TO", sipAddr[1]);
+                broadcastIntent.putExtra("SIP_DOMAIN", sipAddr[2]);
                 broadcastIntent.putExtra("CALL_FROM", call_from);
                 broadcastIntent.putExtra("CALL_TO", call_to);
-                //sendBroadcast(broadcastIntent);
                 Log.e("SignalR", "Message received in service");
                 Log.e("SignalR", "From:" + call_from + ", To:" + call_to);
                 sendBroadcast(broadcastIntent, null);
-//                PendingIntent.getBroadcast()
             }
         }, String.class , String.class, String.class);
 
@@ -100,7 +103,7 @@ public class SIPService extends Service {
         try {
             SignalRFuture<Void> awaitConnection = mConnection.start();
             awaitConnection.get();
-            Toast.makeText(this, "Connected", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Connected", Toast.LENGTH_LONG).show();
         } catch(Exception e) {
             Log.e("SignalR", "Failed to connect to server");
         }
